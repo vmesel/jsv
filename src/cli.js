@@ -33,6 +33,7 @@ const main = () => {
     .arguments("[<json>]")
     .option("-o, --output <format>", `Format of the output: ${available}`, "md")
     .option("-t, --template <template>", "Template to use for rendering")
+    .option("-c. --ckan", "Input in CKAN Schema (instead of JSON Schema)")
     .action((json, options) => run(stdin || json, options));
 
   // input is available right away

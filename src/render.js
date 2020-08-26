@@ -1,5 +1,6 @@
 import fs from "fs";
 
+import { ckan2json } from "./schemas.js";
 import { templateEngine, toHtml, toMarkDown, toPython } from "./engines.js";
 
 const engines = { html: toHtml, md: toMarkDown, py: toPython };
@@ -35,9 +36,17 @@ const validateJson = (input) => {
 };
 
 // helper function to switch between different rendering engines/formats
-const engine = async (input, { template = null, output = null } = {}) => {
+const engine = async (
+  input,
+  { template = null, output = null, ckan = null } = {}
+) => {
   validateOptions({ template: template, output: output });
   const schema = validateJson(input);
+
+  if (ckan !== null) {
+    const converted = ckan2json(schema);
+    return JSON.stringify(converted);
+  }
 
   if (output !== null) {
     return engines[output](schema);
